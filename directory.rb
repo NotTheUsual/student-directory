@@ -16,3 +16,6 @@ puts "Nabin"
 puts "Peter Saxton"
 puts "Rolando Barbella"
 puts "Roy"
+print "Overall, we have "
+print 16
+print " great students"
