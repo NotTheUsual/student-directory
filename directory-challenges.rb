@@ -1,12 +1,17 @@
-# Directory file before the challenges
+# Directory file including all/most of the challenge stuff
 def print_header
-	puts "The students of my cohort at Makers Academy"
-	puts "-------------"
+	print "The students of my cohort at Makers Academy\n"
+	print "-------------\n"
 end
 
 def print_names(students)
-	students.each do |student|
-		puts "#{student[:name]} (#{student[:cohort]} cohort)"
+	#students.each_with_index do |student, index|
+	#	puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length < 12
+	#end
+	count = 0
+	while count < students.length
+		puts "#{count+1}. #{students[count][:name]} (#{students[count][:cohort]} cohort)"
+		count += 1
 	end
 end
 
@@ -38,5 +43,3 @@ students = input_students
 print_header
 print_names(students)
 print_footer(students)
-
-# reached "Exercises"
