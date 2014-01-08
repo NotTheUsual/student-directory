@@ -36,7 +36,7 @@ def input_students(cohort_list)
 	# create an empty array
 	students = []
 	# get the first name
-	name = gets.chomp
+	name = new_chomp(gets)
 	# while the name is not empty, repeat this code
 	while !name.empty? do
 		# check for cohort
@@ -81,6 +81,12 @@ def print_by_cohort(students)
 			print_names students.select{|entry| entry[:cohort] == month.intern}
 		end
 	end 
+end
+
+def new_chomp(input)
+	is_penultimate_char_carriage? = (input[-2] == "\r") or (input[-2] == "\n")
+	#chop off the last character and penultimate character if it is a carriage return
+	input.slice(0...(-1*(is_penultimate_char_carriage? ? 2 : 1)))
 end
 
 # All the current available cohorts
