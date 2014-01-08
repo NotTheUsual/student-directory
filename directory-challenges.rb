@@ -1,7 +1,11 @@
 # Directory file including all/most of the challenge stuff
+
+require 'date'
+
 def print_header
 	print "-".center(50, '-') + "\n"
 	print "The students of my cohort at Makers Academy".center(50) + "\n"
+	print "-".center(50, '-') + "\n"
 	print "-".center(50, '-') + "\n"
 end
 
@@ -17,6 +21,7 @@ def print_names(students)
 		end
 		count += 1
 	end
+	puts "-".center(50, '-') unless students.empty?
 end
 
 def print_footer(names)
@@ -70,6 +75,14 @@ def get_cohort(cohort_list)
 	get_cohort(cohort_list)
 end
 
+def print_by_cohort(students)
+	Date::MONTHNAMES.each do |month|
+		if !month.nil?
+			print_names students.select{|entry| entry[:cohort] == month.intern}
+		end
+	end 
+end
+
 # All the current available cohorts
 cohort_list = {
 	"" => :January, 
@@ -90,5 +103,6 @@ cohort_list = {
 # nothing happens until we call the methods
 students = input_students(cohort_list)
 print_header
-print_names(students)
+#print_names(students)
+print_by_cohort(students)
 print_footer(students)
