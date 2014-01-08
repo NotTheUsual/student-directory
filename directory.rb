@@ -4,7 +4,7 @@ def print_header
 	puts "-------------"
 end
 
-def print_names(students)
+def print_names(students) # There's already a 'print' function, so used this to ease my own confusion
 	students.each do |student|
 		puts "#{student[:name]} (#{student[:cohort]} cohort)"
 	end
