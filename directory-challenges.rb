@@ -4,7 +4,7 @@ require 'date'
 
 def print_header
 	print "-".center(50, '-') + "\n"
-	print "The students of my cohort at Makers Academy".center(50) + "\n"
+	print "  The students of Makers Academy  ".center(50, '-') + "\n"
 	print "-".center(50, '-') + "\n"
 	print "-".center(50, '-') + "\n"
 end
@@ -25,7 +25,7 @@ def print_names(students)
 end
 
 def print_footer(names)
-	puts "Overall, we have #{names.length} great students".center(50)
+	puts "Overall, we have #{names.length} great student #{names.length == 1 ? "" : "s"}".center(50)
 	puts "-".center(50, '-')
 end
 
@@ -55,7 +55,7 @@ def input_students(cohort_list)
 
 		# add the student hash to the array
 		students << {name: name, cohort: fixed_cohort, hobbies: hobbies, country: country_of_birth, height: height}
-		puts "Now we have #{students.length} students"
+		puts "Now we have #{students.length} student" + (students.length == 1 ? "" : "s")
 		puts "Please enter the names of the students"
 		puts "To finish, just hit return"
 		# get another name from the user
