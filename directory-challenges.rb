@@ -89,6 +89,18 @@ def new_chomp(input)
 	input.slice(0...(-1*(is_penultimate_char_carriage ? 2 : 1)))
 end
 
+def print_everything(students, cohort_list)
+	unless students.empty?
+		print_header
+		print_by_cohort(students)
+		print_footer(students)
+	else
+		puts "No students in directory, sorry."
+	end
+end
+
+
+
 # All the current available cohorts
 cohort_list = {
 	"" => :January, 
@@ -108,7 +120,5 @@ cohort_list = {
 
 # nothing happens until we call the methods
 students = input_students(cohort_list)
-print_header
-#print_names(students)
-print_by_cohort(students)
-print_footer(students)
+
+print_everything(students, cohort_list)
