@@ -10,9 +10,9 @@ def print_names(students)
 	while count < students.length
 		if students[count][:name].length < 12 # Also, if students[count][:name][0].capitalise == 'A'
 			puts "#{count+1}. #{students[count][:name]} (#{students[count][:cohort]} cohort)".center(50)
-			puts "They enjoy #{students[count][:hobbies]}.".center(50)
-			puts "They were born in #{students[count][:country]}.".center(50)
-			puts "They are #{students[count][:height]} tall.".center(50)
+			puts "They enjoy #{students[count][:hobbies]}.".center(50) unless students[count][:hobbies] == ""
+			puts "They were born in #{students[count][:country]}.".center(50) unless students[count][:country] == ""
+			puts "They are #{students[count][:height]} tall.".center(50) unless students[count][:height] == ""
 			puts "-".center(50, '-')
 		end
 		count += 1
