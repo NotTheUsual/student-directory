@@ -25,7 +25,7 @@ def print_names(students)
 end
 
 def print_footer(names)
-	puts "Overall, we have #{names.length} great student #{names.length == 1 ? "" : "s"}".center(50)
+	puts "Overall, we have #{names.length} great student#{names.length == 1 ? "" : "s"}".center(50)
 	puts "-".center(50, '-')
 end
 
@@ -84,9 +84,9 @@ def print_by_cohort(students)
 end
 
 def new_chomp(input)
-	is_penultimate_char_carriage? = (input[-2] == "\r") or (input[-2] == "\n")
+	is_penultimate_char_carriage = (input[-2] == "\r") or (input[-2] == "\n")
 	#chop off the last character and penultimate character if it is a carriage return
-	input.slice(0...(-1*(is_penultimate_char_carriage? ? 2 : 1)))
+	input.slice(0...(-1*(is_penultimate_char_carriage ? 2 : 1)))
 end
 
 # All the current available cohorts
