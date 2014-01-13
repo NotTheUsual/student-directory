@@ -45,7 +45,7 @@ def input_students
 	puts "To finish, just hit return twice"
 
 	# get the first name
-	name = gets.chomp
+	name = STDIN.gets.chomp
 	# while the name is not empty, repeat this code
 	while !name.empty? do
 		# check for cohort
@@ -54,13 +54,13 @@ def input_students
 
 		# check for hobbies
 		puts "What hobbies do they have?"
-		hobbies = gets.chomp
+		hobbies = STDIN.gets.chomp
 		# check for country of birth
 		puts "Where were they born?"
-		country_of_birth = gets.chomp
+		country_of_birth = STDIN.gets.chomp
 		# height
 		puts "How tall are they?"
-		height = gets.chomp
+		height = STDIN.gets.chomp
 
 		# add the student hash to the array
 		@students << {name: name, cohort: fixed_cohort, hobbies: hobbies, country: country_of_birth, height: height}
@@ -68,7 +68,7 @@ def input_students
 		puts "Please enter the names of the students"
 		puts "To finish, just hit return"
 		# get another name from the user
-		name = gets.chomp
+		name = STDIN.gets.chomp
 	end	
 
 	# return the array of students
@@ -77,7 +77,7 @@ end
 
 def get_cohort
 	# ask for the cohort
-	cohort = gets.chomp.slice(0,3)
+	cohort = STDIN.gets.chomp.slice(0,3)
 	formatted_cohort = cohort.capitalize
 	return @cohort_list[formatted_cohort] if @cohort_list[formatted_cohort] 
 	puts "That doesn't look a real month. Please try again."
@@ -129,14 +129,15 @@ def process(selection)
 end
 
 def interactive_menu
+	try_load_students
 	loop do
 		print_menu
-		process(gets.chomp)
+		process(STDIN.gets.chomp)
 	end
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort, hobbies, country, height = line.chomp.split(',')
 		@students << {name: name, cohort: cohort.to_sym, hobbies: hobbies, country: country, height: height}
@@ -154,6 +155,18 @@ def save_students
 		file.puts csv_line
 	end
 	file.close
+end
+
+def try_load_students
+	filename = ARGV.first # First argument from the command line
+	return if filename.nil? # Get out of the method if it isn't given
+	if File.exists?(filename) # Check the file exists
+		load_students(filename)
+		puts "Loaded #{@students.length} from #{filename}"
+	else # If it doesn't exist
+		puts "Sorry, #{filename} doesn't exist"
+		exit # Quit the program
+	end
 end
 
 # Empty students array
