@@ -116,13 +116,17 @@ def print_everything(students, cohort_list)
 	end
 end
 
+def print_menu
+	puts "1. Input the students"
+	puts "2. Show the students"
+	puts "9. Exit"
+end
+
 def interactive_menu(cohort_list)
 	students = []
 	loop do
 		# 1. Print the menu and as the user what to do
-		puts "1. Input the students"
-		puts "2. Show the students"
-		puts "9. Exit"
+		
 		# 2. Read the input and save it into a variable
 		selection = gets.chomp
 		# 3. Do what the user has asked
@@ -139,10 +143,11 @@ def interactive_menu(cohort_list)
 	end
 end
 
-
+# Empty students array
+@students = []
 
 # All the current available cohorts
-cohort_list = {
+@cohort_list = {
 	"" => :January, 
 	"Jan" => :January, 
 	"Feb" => :February, 
