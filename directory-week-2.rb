@@ -8,31 +8,34 @@ def print_header
 	print "".center(93, '=') + "\n"
 end
 
-def print_names(students, filtered_by_month = false, month = :January)
-	count = 0
+def print_names(students, conditions = nil, month = :January)
 	unless students.empty?
-		if filtered_by_month
+		if conditions && conditions.include?("with_cohort_filter")
 			puts "  #{month} Cohort  ".center(93, '-')
 			puts "".center(93, '-')
 		end
 		print "   " + "Name".ljust(15)
-		filtered_by_month ? print(" ".ljust(5)) : print("Cohort".ljust(25))
-		print "Hobbies".ljust(20) + "Place of Birth".ljust(20) + "Height".ljust(10) + "\n"
-		
+		conditions && conditions.include?("with_cohort_filter") ? print(" ".ljust(25)) : print("Cohort".ljust(25))
+		print "Hobbies".ljust(20) + "Place of Birth".ljust(20) + "Height".ljust(10) + "\n"		
 		puts "-".center(93, '-')
-		while count < students.length
-			if students[count][:name].length < 12 # Also, if students[count][:name][0].capitalise == 'A'
-				print "#{count+1}. " + "#{students[count][:name]}".ljust(15)
-				filtered_by_month ? print(" ".ljust(5)) : print("#{students[count][:cohort]} cohort".ljust(25))
-				print "#{students[count][:hobbies]}".ljust(20)
-				print "#{students[count][:country]}".ljust(20)
-				puts "#{students[count][:height]}".ljust(10)
-				puts "".center(93, '-')
+
+		students.each_with_index do |student, i|
+			if conditions && conditions.include?("with_letter_filter")
+				print_line(student, i, conditions) if student[:name][0].capitalize == @letter
+			else
+				print_line(student, i, conditions)
 			end
-			count += 1
 		end
-		# puts "-".center(50, '-')
 	end
+end
+
+def print_line(student, i, conditions = nil)
+	print "#{i + 1}. " + "#{student[:name]}".ljust(15)
+	conditions && conditions.include?("with_cohort_filter") ? print("".ljust(25)) : print("#{student[:cohort]} cohort".ljust(25))
+	print "#{student[:hobbies]}".ljust(20)
+	print "#{student[:country]}".ljust(20)
+	puts "#{student[:height]}".ljust(10)
+	puts "".center(93, '-')
 end
 
 def print_footer
@@ -41,9 +44,8 @@ def print_footer
 end
 
 def input_students
-	puts "Please enter the names of the students"
-	puts "To finish, just hit return twice"
-
+	puts "Please enter the name of a student"
+	puts "To finish, just hit return"
 	# get the first name
 	name = STDIN.gets.chomp
 	# while the name is not empty, repeat this code
@@ -51,7 +53,6 @@ def input_students
 		# check for cohort
 		puts "What cohort are they in? (Default is January)"
 		fixed_cohort = get_cohort
-
 		# check for hobbies
 		puts "What hobbies do they have?"
 		hobbies = STDIN.gets.chomp
@@ -65,14 +66,11 @@ def input_students
 		# add the student hash to the array
 		@students << {name: name, cohort: fixed_cohort, hobbies: hobbies, country: country_of_birth, height: height}
 		puts "Now we have #{@students.length} student" + (@students.length == 1 ? "" : "s")
-		puts "Please enter the names of the students"
-		puts "To finish, just hit return"
 		# get another name from the user
+		puts "Please enter the name of another student"
+		puts "To finish, just hit return"
 		name = STDIN.gets.chomp
 	end	
-
-	# return the array of students
-	@students
 end
 
 def get_cohort
@@ -87,27 +85,40 @@ end
 def print_by_cohort
 	Date::MONTHNAMES.each do |month|
 		if !month.nil?
-			print_names(@students.select{|entry| entry[:cohort] == month.intern}, true, month)
+			print_names(@students.select{|entry| entry[:cohort] == month.intern}, ["with_cohort_filter"], month)
 		end
 	end 
 end
 
-def print_everything
+def print_everything(conditions = nil, letter = nil)
 	unless @students.empty?
 		print_header
-		print_by_cohort
-		# print_names
+		if conditions && conditions.include?("with_cohort_filter")
+			print_by_cohort
+		elsif conditions && conditions.include?("with_letter_filter")
+			print_names(@students, ["with_letter_filter"])
+		else
+			print_names(@students)
+		end
 		print_footer
 	else
 		puts "No students in directory, sorry."
 	end
 end
 
+def print_by_letter
+	puts "Enter the letter you want to filter by"
+	@letter = STDIN.gets.slice(0,1)
+	print_everything(["with_letter_filter"])
+end
+
 def print_menu
 	puts "1. Input the students"
 	puts "2. Show the students"
-	puts "3. Save the list to students.csv"
-	puts "4. Load the list from students.csv"
+	puts "3. Show the students listed by cohort"
+	puts "4. Show students filtered by the first letter of their name"
+	puts "5. Save the list to students.csv"
+	puts "6. Load the list from students.csv"
 	puts "9. Exit"
 end
 
@@ -118,8 +129,12 @@ def process(selection)
 	when "2"
 		print_everything
 	when "3"
-		save_students
+		print_everything(["with_cohort_filter"])
 	when "4"
+		print_by_letter
+	when "5"
+		save_students
+	when "6"
 		load_students
 	when "9"
 		exit
@@ -187,6 +202,8 @@ end
 	"Nov" => :November,
 	"Dec" => :December
 }
+# Letter
+@letter = nil
 
 # nothing happens until we call the methods
 #students = input_students(cohort_list)

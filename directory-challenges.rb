@@ -126,7 +126,7 @@ def interactive_menu(cohort_list)
 	students = []
 	loop do
 		# 1. Print the menu and as the user what to do
-		
+		print_menu
 		# 2. Read the input and save it into a variable
 		selection = gets.chomp
 		# 3. Do what the user has asked
@@ -167,4 +167,4 @@ end
 #students = input_students(cohort_list)
 #print_everything(students, cohort_list)
 
-interactive_menu(cohort_list)
+interactive_menu(@cohort_list)
